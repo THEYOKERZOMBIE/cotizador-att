@@ -1,180 +1,795 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador AT&T Adam Chávez</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Cotizador AT&T Adam Chávez</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff6b00, #ffffff);
-      margin: 0;
-      padding: 20px;
-      color: #111;
-    }
-
-    .contenedor {
-      max-width: 430px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-    }
-
-    h1 {
-      text-align: center;
-      color: #ff6b00;
-      margin-bottom: 5px;
-    }
-
-    .subtitulo {
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: 20px;
-      color: #444;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 12px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 5px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+    * {
       box-sizing: border-box;
     }
 
-    button {
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #ff6b00, #ffffff 55%, #f2f2f2);
+      color: #111;
+      padding: 20px;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.16);
+    }
+
+    .panel h1 {
+      margin: 0;
+      color: #ff6b00;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .panel .subtitulo {
+      text-align: center;
+      margin: 8px 0 20px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-top: 13px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
+      border: 1px solid #d4d4d4;
+      border-radius: 14px;
+      margin-top: 6px;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .fila {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
       margin-top: 18px;
       border: none;
-      border-radius: 14px;
-      background: #ff6b00;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .resultado {
-      background: #f5f5f5;
-      padding: 15px;
-      margin-top: 20px;
       border-radius: 16px;
-      font-size: 15px;
-      white-space: pre-line;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
 
-    .whatsapp {
-      background: #25D366;
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .btn-principal {
+      background: linear-gradient(135deg, #ff3d00, #ff7a00);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 107, 0, 0.35);
+    }
+
+    .btn-secundario {
+      background: #111;
+      color: white;
     }
 
     .nota {
+      margin-top: 14px;
       font-size: 12px;
       color: #666;
-      margin-top: 15px;
       text-align: center;
+      line-height: 1.4;
+    }
+
+    .preview-area {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+    }
+
+    #cotizacion {
+      width: 720px;
+      min-height: 900px;
+      background: #ffffff;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.22);
+      position: relative;
+    }
+
+    .cot-header {
+      background: linear-gradient(135deg, #ff6b00, #ff8f1f);
+      color: white;
+      padding: 32px 34px 26px;
+      position: relative;
+    }
+
+    .cot-header::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -70px;
+      width: 210px;
+      height: 210px;
+      background: rgba(255,255,255,0.16);
+      border-radius: 50%;
+    }
+
+    .marca {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .marca h2 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .badge {
+      background: #111;
+      color: white;
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .cliente {
+      margin-top: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cliente p {
+      margin: 0;
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    .cliente h3 {
+      margin: 5px 0 0;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .media-section {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 14px;
+      padding: 18px;
+      background: #f5f5f5;
+    }
+
+    .foto-box {
+      background: white;
+      border-radius: 22px;
+      min-height: 245px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #ececec;
+    }
+
+    .foto-box img {
+      width: 100%;
+      height: 100%;
+      min-height: 245px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .foto-placeholder {
+      min-height: 245px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 16px;
+      color: #777;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #eeeeee);
+    }
+
+    .tag-img {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      background: rgba(0,0,0,0.72);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .info {
+      padding: 24px 28px 12px;
+    }
+
+    .equipo-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+      border-bottom: 1px solid #eeeeee;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+    }
+
+    .equipo-title h2 {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.1;
+      color: #111;
+    }
+
+    .tramite-pill {
+      background: #eaf7ff;
+      color: #0073a8;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .grid-datos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .dato {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 18px;
+      border: 1px solid #ededed;
+    }
+
+    .dato span {
+      display: block;
+      color: #666;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .dato strong {
+      display: block;
+      font-size: 24px;
+      color: #111;
+      line-height: 1.1;
+    }
+
+    .dato.promo {
+      background: #111;
+      color: white;
+    }
+
+    .dato.promo span,
+    .dato.promo strong {
+      color: white;
+    }
+
+    .dato.total {
+      background: linear-gradient(135deg, #ff6b00, #ff3d00);
+      color: white;
+      grid-column: 1 / -1;
+    }
+
+    .dato.total span,
+    .dato.total strong {
+      color: white;
+    }
+
+    .plan-box {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 22px;
+      background: #f1f7fa;
+      border: 1px solid #dbeef5;
+    }
+
+    .plan-box h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      color: #111;
+    }
+
+    .plan-box p {
+      margin: 4px 0;
+      color: #333;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .beneficios {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .beneficio {
+      background: white;
+      border-radius: 14px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #222;
+      border: 1px solid #e6eef2;
+    }
+
+    .footer-card {
+      margin-top: 18px;
+      background: #111;
+      color: white;
+      padding: 22px 28px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .footer-card h3 {
+      margin: 0 0 6px;
+      color: #ff8f1f;
+      font-size: 21px;
+    }
+
+    .footer-card p {
+      margin: 4px 0;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .ejecutivo {
+      text-align: right;
+      border-left: 1px solid rgba(255,255,255,0.18);
+      padding-left: 18px;
+    }
+
+    .ejecutivo strong {
+      display: block;
+      font-size: 23px;
+      color: white;
+      margin-top: 3px;
+    }
+
+    .legal {
+      padding: 14px 24px 22px;
+      font-size: 11px;
+      color: #666;
+      line-height: 1.35;
+      background: white;
+    }
+
+    .tachado {
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      #cotizacion {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 12px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .fila,
+      .grid-datos,
+      .media-section,
+      .footer-card,
+      .beneficios {
+        grid-template-columns: 1fr;
+      }
+
+      .marca {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .marca h2 {
+        font-size: 28px;
+      }
+
+      .cliente h3 {
+        font-size: 25px;
+      }
+
+      .equipo-title {
+        flex-direction: column;
+      }
+
+      .equipo-title h2 {
+        font-size: 26px;
+      }
+
+      .ejecutivo {
+        text-align: left;
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid rgba(255,255,255,0.18);
+        padding-top: 14px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="contenedor">
-    <h1>Simulador AT&T 📱</h1>
-    <p class="subtitulo">Cotización rápida con tu ejecutivo de confianza Adam Chávez</p>
+  <div class="app">
 
-    <label>Nombre del cliente</label>
-    <input type="text" id="cliente" placeholder="Ej. Juan">
+    <section class="panel">
+      <h1>Cotizador AT&T 📱</h1>
+      <p class="subtitulo">Llena los datos y descarga la cotización como imagen</p>
 
-    <label>Equipo a cotizar</label>
-    <input type="text" id="equipo" placeholder="Ej. iPhone 17 Pro Max">
+      <label>Nombre del cliente</label>
+      <input type="text" id="cliente" value="Cliente" oninput="actualizarCotizacion()">
 
-    <label>Precio promo del equipo</label>
-    <input type="number" id="precio" placeholder="Ej. 24000">
+      <label>Equipo a cotizar</label>
+      <input type="text" id="equipo" value="iPhone 17 Pro Max" oninput="actualizarCotizacion()">
 
-    <label>Enganche aproximado</label>
-    <input type="number" id="enganche" placeholder="Ej. 2400">
+      <label>Tipo de trámite</label>
+      <select id="tramite" onchange="actualizarCotizacion()">
+        <option>Activación nueva</option>
+        <option>Renovación</option>
+        <option>Línea adicional</option>
+      </select>
 
-    <label>Meses</label>
-    <select id="meses">
-      <option value="24">24 meses</option>
-      <option value="18">18 meses</option>
-      <option value="12">12 meses</option>
-    </select>
+      <div class="fila">
+        <div>
+          <label>Precio regular</label>
+          <input type="number" id="precioRegular" value="31000" oninput="actualizarCotizacion()">
+        </div>
 
-    <label>Plan recomendado</label>
-    <input type="text" id="plan" placeholder="Ej. Plan Black 40GB + 6 apps ilimitadas">
+        <div>
+          <label>Precio promo</label>
+          <input type="number" id="precioPromo" value="24000" oninput="actualizarCotizacion()">
+        </div>
+      </div>
 
-    <button onclick="generarCotizacion()">Generar cotización</button>
+      <div class="fila">
+        <div>
+          <label>Enganche aproximado</label>
+          <input type="number" id="enganche" value="2400" oninput="actualizarCotizacion()">
+        </div>
 
-    <div class="resultado" id="resultado">
-      Aquí aparecerá la cotización.
-    </div>
+        <div>
+          <label>Meses</label>
+          <select id="meses" onchange="actualizarCotizacion()">
+            <option value="24">24 meses</option>
+            <option value="18">18 meses</option>
+            <option value="12">12 meses</option>
+          </select>
+        </div>
+      </div>
 
-    <button class="whatsapp" onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
+      <label>Plan AT&T</label>
+      <select id="plan" onchange="actualizarCotizacion()">
+        <option value="Plata|25|650">AT&T Plata - 25 GB - $650</option>
+        <option value="Oro|32|725">AT&T Oro - 32 GB - $725</option>
+        <option value="Black|42|825" selected>AT&T Black - 42 GB - $825</option>
+        <option value="Platino|50|1035">AT&T Platino - 50 GB - $1,035</option>
+        <option value="Diamante|55|1300">AT&T Diamante - 55 GB - $1,300</option>
+        <option value="Titanio|42|1599">AT&T Titanio - 42 GB - $1,599</option>
+      </select>
 
-    <p class="nota">
-      Cotización aproximada. El enganche y mensualidad final se validan en sucursal.
-    </p>
+      <label>Foto del equipo</label>
+      <input type="file" id="fotoEquipo" accept="image/*" onchange="cargarImagen(event, 'imgEquipo', 'placeholderEquipo')">
+
+      <label>Foto de la plaza o tienda</label>
+      <input type="file" id="fotoPlaza" accept="image/*" onchange="cargarImagen(event, 'imgPlaza', 'placeholderPlaza')">
+
+      <label>Nota personalizada</label>
+      <textarea id="notaPersonal" oninput="actualizarCotizacion()">Cotización aproximada. Enganche y mensualidad final se validan en sucursal.</textarea>
+
+      <button class="btn btn-principal" onclick="descargarImagen()">
+        Descargar cotización como imagen 📸
+      </button>
+
+      <button class="btn btn-secundario" onclick="limpiarFormulario()">
+        Limpiar datos
+      </button>
+
+      <p class="nota">
+        Consejo: sube una foto clara del equipo y una foto bonita de la plaza para que la cotización se vea más premium.
+      </p>
+    </section>
+
+    <section class="preview-area">
+
+      <div id="cotizacion">
+
+        <div class="cot-header">
+          <div class="marca">
+            <h2>AT&T Premium</h2>
+            <div class="badge">Cotización personalizada</div>
+          </div>
+
+          <div class="cliente">
+            <p>Hola,</p>
+            <h3 id="vistaCliente">Cliente</h3>
+          </div>
+        </div>
+
+        <div class="media-section">
+          <div class="foto-box">
+            <span class="tag-img">Equipo cotizado</span>
+            <div id="placeholderEquipo" class="foto-placeholder">
+              Sube aquí la foto del equipo 📱
+            </div>
+            <img id="imgEquipo" style="display:none;" alt="Foto del equipo">
+          </div>
+
+          <div class="foto-box">
+            <span class="tag-img">Sucursal</span>
+            <div id="placeholderPlaza" class="foto-placeholder">
+              Sube aquí la foto de la plaza 🏬
+            </div>
+            <img id="imgPlaza" style="display:none;" alt="Foto de la plaza">
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="equipo-title">
+            <h2 id="vistaEquipo">iPhone 17 Pro Max</h2>
+            <div class="tramite-pill" id="vistaTramite">Activación nueva</div>
+          </div>
+
+          <div class="grid-datos">
+            <div class="dato">
+              <span>Precio regular</span>
+              <strong class="tachado" id="vistaPrecioRegular">$31,000</strong>
+            </div>
+
+            <div class="dato promo">
+              <span>Precio promo</span>
+              <strong id="vistaPrecioPromo">$24,000</strong>
+            </div>
+
+            <div class="dato">
+              <span>Enganche aprox.</span>
+              <strong id="vistaEnganche">$2,400</strong>
+            </div>
+
+            <div class="dato">
+              <span>Equipo aprox. al mes</span>
+              <strong id="vistaMensualEquipo">$900</strong>
+            </div>
+
+            <div class="dato total">
+              <span>Total aproximado mensual</span>
+              <strong id="vistaTotalMensual">$1,725</strong>
+            </div>
+          </div>
+
+          <div class="plan-box">
+            <h3 id="vistaPlan">AT&T Black</h3>
+            <p><strong id="vistaGb">42 GB</strong> incluidos en tu plan.</p>
+            <p>Renta mensual del plan: <strong id="vistaRentaPlan">$825</strong></p>
+
+            <div class="beneficios">
+              <div class="beneficio">✅ 6 apps / RRSS</div>
+              <div class="beneficio">📞 Minutos ilimitados</div>
+              <div class="beneficio">💬 SMS ilimitados</div>
+              <div class="beneficio">❌💳 Sin tarjeta de crédito</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <div>
+            <h3>AT&T Plaza Puerta La Victoria</h3>
+            <p>📍 Av. Constituyentes Ote. 40 - A, zona dos extendida, Villas del Sol, 76046 Santiago de Querétaro, Qro.</p>
+            <p>🕚 Horario: 11:00 a.m. a 8:00 p.m.</p>
+            <p>🗺️ Ubicación: https://share.google/QuT1JA6GkByXxBZrV</p>
+          </div>
+
+          <div class="ejecutivo">
+            <p>Te atiende tu ejecutivo de confianza:</p>
+            <strong>Adam Chávez</strong>
+            <p>📲 WhatsApp: 442 756 1010</p>
+          </div>
+        </div>
+
+        <div class="legal" id="vistaNota">
+          Cotización aproximada. Enganche y mensualidad final se validan en sucursal.
+        </div>
+
+      </div>
+
+    </section>
+
   </div>
 
   <script>
-    let mensajeFinal = "";
-
-    function generarCotizacion() {
-      const cliente = document.getElementById("cliente").value;
-      const equipo = document.getElementById("equipo").value;
-      const precio = Number(document.getElementById("precio").value);
-      const enganche = Number(document.getElementById("enganche").value);
-      const meses = Number(document.getElementById("meses").value);
-      const plan = document.getElementById("plan").value;
-
-      const restante = precio - enganche;
-      const mensualEquipo = restante / meses;
-
-      mensajeFinal =
-`Hola ${cliente} 👋😄
-
-Te comparto tu cotización aproximada:
-
-📱 Equipo: ${equipo}
-🔥 Precio promo: $${precio.toLocaleString("es-MX")}
-💰 Enganche aprox: $${enganche.toLocaleString("es-MX")}
-📆 Plazo: ${meses} meses
-📲 Equipo aprox al mes: $${mensualEquipo.toFixed(0)}
-
-📶 Plan recomendado:
-${plan}
-
-✅ Sin tarjeta de crédito
-🪪 Solo INE + enganche
-📍 Solo aquí en AT&T Plaza Puerta La Victoria
-🤝 Con tu ejecutivo de confianza: Adam Chávez
-
-¿Te gustaría realizar una visita para revisar tu cotización exacta? 📲🔥`;
-
-      document.getElementById("resultado").innerText = mensajeFinal;
+    function formatoMoneda(valor) {
+      const numero = Number(valor) || 0;
+      return numero.toLocaleString("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        maximumFractionDigits: 0
+      });
     }
 
-    function enviarWhatsApp() {
-      if (mensajeFinal === "") {
-        generarCotizacion();
+    function obtenerPlan() {
+      const valor = document.getElementById("plan").value;
+      const partes = valor.split("|");
+
+      return {
+        nombre: partes[0],
+        gb: partes[1],
+        renta: Number(partes[2])
+      };
+    }
+
+    function actualizarCotizacion() {
+      const cliente = document.getElementById("cliente").value || "Cliente";
+      const equipo = document.getElementById("equipo").value || "Equipo a cotizar";
+      const tramite = document.getElementById("tramite").value;
+      const precioRegular = Number(document.getElementById("precioRegular").value) || 0;
+      const precioPromo = Number(document.getElementById("precioPromo").value) || 0;
+      const enganche = Number(document.getElementById("enganche").value) || 0;
+      const meses = Number(document.getElementById("meses").value) || 24;
+      const nota = document.getElementById("notaPersonal").value || "";
+
+      const plan = obtenerPlan();
+
+      let restante = precioPromo - enganche;
+
+      if (restante < 0) {
+        restante = 0;
       }
 
-      const numero = "524427561010";
-      const url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensajeFinal);
-      window.open(url, "_blank");
+      const mensualEquipo = restante / meses;
+      const totalMensual = mensualEquipo + plan.renta;
+
+      document.getElementById("vistaCliente").innerText = cliente;
+      document.getElementById("vistaEquipo").innerText = equipo;
+      document.getElementById("vistaTramite").innerText = tramite;
+
+      document.getElementById("vistaPrecioRegular").innerText = formatoMoneda(precioRegular);
+      document.getElementById("vistaPrecioPromo").innerText = formatoMoneda(precioPromo);
+      document.getElementById("vistaEnganche").innerText = formatoMoneda(enganche);
+      document.getElementById("vistaMensualEquipo").innerText = formatoMoneda(mensualEquipo);
+
+      document.getElementById("vistaTotalMensual").innerText = formatoMoneda(totalMensual);
+
+      document.getElementById("vistaPlan").innerText = "AT&T " + plan.nombre;
+      document.getElementById("vistaGb").innerText = plan.gb + " GB";
+      document.getElementById("vistaRentaPlan").innerText = formatoMoneda(plan.renta);
+
+      document.getElementById("vistaNota").innerText = nota;
     }
+
+    function cargarImagen(event, imgId, placeholderId) {
+      const archivo = event.target.files[0];
+
+      if (!archivo) return;
+
+      const lector = new FileReader();
+
+      lector.onload = function(e) {
+        const img = document.getElementById(imgId);
+        const placeholder = document.getElementById(placeholderId);
+
+        img.src = e.target.result;
+        img.style.display = "block";
+        placeholder.style.display = "none";
+      };
+
+      lector.readAsDataURL(archivo);
+    }
+
+    function descargarImagen() {
+      actualizarCotizacion();
+
+      const cotizacion = document.getElementById("cotizacion");
+      const cliente = document.getElementById("cliente").value || "cliente";
+      const equipo = document.getElementById("equipo").value || "equipo";
+
+      html2canvas(cotizacion, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      }).then(canvas => {
+        const enlace = document.createElement("a");
+
+        const nombreArchivo = "cotizacion-att-" +
+          cliente.toLowerCase().replaceAll(" ", "-") +
+          "-" +
+          equipo.toLowerCase().replaceAll(" ", "-") +
+          ".png";
+
+        enlace.download = nombreArchivo;
+        enlace.href = canvas.toDataURL("image/png");
+        enlace.click();
+      });
+    }
+
+    function limpiarFormulario() {
+      document.getElementById("cliente").value = "Cliente";
+      document.getElementById("equipo").value = "";
+      document.getElementById("tramite").value = "Activación nueva";
+      document.getElementById("precioRegular").value = "";
+      document.getElementById("precioPromo").value = "";
+      document.getElementById("enganche").value = "";
+      document.getElementById("meses").value = "24";
+      document.getElementById("plan").value = "Black|42|825";
+      document.getElementById("notaPersonal").value = "Cotización aproximada. Enganche y mensualidad final se validan en sucursal.";
+
+      document.getElementById("fotoEquipo").value = "";
+      document.getElementById("fotoPlaza").value = "";
+
+      document.getElementById("imgEquipo").style.display = "none";
+      document.getElementById("imgEquipo").src = "";
+      document.getElementById("placeholderEquipo").style.display = "flex";
+
+      document.getElementById("imgPlaza").style.display = "none";
+      document.getElementById("imgPlaza").src = "";
+      document.getElementById("placeholderPlaza").style.display = "flex";
+
+      actualizarCotizacion();
+    }
+
+    actualizarCotizacion();
   </script>
 
 </body>
