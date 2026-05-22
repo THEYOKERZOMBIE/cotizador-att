@@ -15,7 +15,6 @@
 
     :root {
       --azul-att: #00A8E0;
-      --azul-claro: #EAF8FF;
       --negro: #111827;
       --gris: #374151;
       --gris-suave: #F5F9FC;
@@ -287,8 +286,8 @@
     }
 
     .foto-box.producto img {
-      width: 86%;
-      height: 86%;
+      width: 88%;
+      height: 88%;
       object-fit: contain;
       object-position: center;
       background: white;
@@ -568,9 +567,29 @@
     }
 
     .ejecutivo {
-      text-align: right;
+      text-align: center;
       border-left: 1px solid #dce8f0;
       padding-left: 24px;
+    }
+
+    .foto-ejecutivo-box {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 12px;
+      background: #eaf8ff;
+      border: 4px solid white;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      display: none;
+    }
+
+    .foto-ejecutivo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
 
     .ejecutivo p {
@@ -605,56 +624,56 @@
     }
 
     .modo-export {
-      width: 2160px !important;
-      border-radius: 80px !important;
+      width: 1920px !important;
+      border-radius: 76px !important;
       box-shadow: none !important;
       transform: none !important;
     }
 
     .modo-export .cot-header {
-      padding: 108px 108px 96px;
+      padding: 92px 92px 82px;
     }
 
     .modo-export .marca h2 {
-      font-size: 104px;
+      font-size: 92px;
     }
 
     .modo-export .badge {
-      font-size: 36px;
-      padding: 28px 40px;
+      font-size: 32px;
+      padding: 24px 36px;
     }
 
     .modo-export .cliente {
-      margin-top: 52px;
+      margin-top: 48px;
     }
 
     .modo-export .cliente p {
-      font-size: 46px;
+      font-size: 42px;
     }
 
     .modo-export .cliente h3 {
-      font-size: 90px;
+      font-size: 82px;
     }
 
     .modo-export .media-section {
       grid-template-columns: 1fr 1fr !important;
-      gap: 60px;
-      padding: 64px;
+      gap: 52px;
+      padding: 56px;
     }
 
     .modo-export .foto-box {
-      height: 900px;
-      border-radius: 64px;
+      height: 760px;
+      border-radius: 62px;
     }
 
     .modo-export .foto-placeholder {
-      height: 900px;
+      height: 760px;
       font-size: 34px;
     }
 
     .modo-export .foto-box.producto img {
-      width: 86% !important;
-      height: 86% !important;
+      width: 88% !important;
+      height: 88% !important;
       object-fit: contain !important;
     }
 
@@ -667,46 +686,46 @@
     }
 
     .modo-export .tag-img {
-      font-size: 32px;
-      padding: 20px 32px;
-      left: 32px;
-      top: 32px;
+      font-size: 30px;
+      padding: 18px 30px;
+      left: 30px;
+      top: 30px;
     }
 
     .modo-export .info {
-      padding: 88px 92px 48px;
+      padding: 78px 82px 42px;
     }
 
     .modo-export .equipo-title {
-      padding-bottom: 44px;
-      margin-bottom: 44px;
+      padding-bottom: 40px;
+      margin-bottom: 40px;
     }
 
     .modo-export .equipo-title h2 {
-      font-size: 98px;
+      font-size: 88px;
     }
 
     .modo-export .tramite-pill {
-      font-size: 36px;
-      padding: 26px 38px;
+      font-size: 32px;
+      padding: 22px 34px;
     }
 
     .modo-export .promo-main {
-      padding: 48px;
-      border-radius: 52px;
-      margin-bottom: 36px;
+      padding: 42px;
+      border-radius: 48px;
+      margin-bottom: 32px;
     }
 
     .modo-export .promo-main span {
-      font-size: 30px;
+      font-size: 28px;
     }
 
     .modo-export .promo-main strong {
-      font-size: 70px;
+      font-size: 62px;
     }
 
     .modo-export .promo-main small {
-      font-size: 34px;
+      font-size: 30px;
     }
 
     .modo-export .grid-datos,
@@ -716,102 +735,109 @@
     }
 
     .modo-export .grid-datos {
-      gap: 36px;
+      gap: 32px;
     }
 
     .modo-export .dato {
-      padding: 46px;
-      border-radius: 52px;
+      padding: 40px;
+      border-radius: 48px;
     }
 
     .modo-export .dato span {
-      font-size: 32px;
+      font-size: 28px;
     }
 
     .modo-export .dato strong {
-      font-size: 80px;
+      font-size: 72px;
     }
 
     .modo-export .dato.total {
-      padding: 56px;
+      padding: 48px;
     }
 
     .modo-export .dato.total strong {
-      font-size: 104px;
+      font-size: 92px;
     }
 
     .modo-export .plan-box {
-      padding: 56px;
-      border-radius: 64px;
-      margin-top: 44px;
-    }
-
-    .modo-export .plan-box h3 {
-      font-size: 78px;
-    }
-
-    .modo-export .plan-box p {
-      font-size: 42px;
-    }
-
-    .modo-export .beneficios {
-      gap: 28px;
-      margin-top: 36px;
-    }
-
-    .modo-export .beneficio {
-      font-size: 36px;
-      padding: 30px 36px;
-      border-radius: 40px;
-    }
-
-    .modo-export .desglose-box {
-      padding: 44px;
-      border-radius: 48px;
+      padding: 50px;
+      border-radius: 60px;
       margin-top: 40px;
     }
 
-    .modo-export .desglose-box h4 {
-      font-size: 46px;
+    .modo-export .plan-box h3 {
+      font-size: 70px;
     }
 
-    .modo-export .desglose-line {
+    .modo-export .plan-box p {
       font-size: 38px;
-      padding: 18px 0;
     }
 
-    .modo-export .desglose-line.total-line {
+    .modo-export .beneficios {
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .modo-export .beneficio {
+      font-size: 32px;
+      padding: 28px 32px;
+      border-radius: 36px;
+    }
+
+    .modo-export .desglose-box {
+      padding: 40px;
+      border-radius: 44px;
+      margin-top: 36px;
+    }
+
+    .modo-export .desglose-box h4 {
       font-size: 42px;
     }
 
+    .modo-export .desglose-line {
+      font-size: 34px;
+      padding: 16px 0;
+    }
+
+    .modo-export .desglose-line.total-line {
+      font-size: 38px;
+    }
+
     .modo-export .footer-card {
-      padding: 72px 92px;
-      gap: 60px;
+      padding: 64px 82px;
+      gap: 52px;
     }
 
     .modo-export .footer-card h3 {
-      font-size: 68px;
+      font-size: 60px;
     }
 
     .modo-export .footer-card p {
-      font-size: 40px;
+      font-size: 34px;
     }
 
     .modo-export .ejecutivo {
-      text-align: right !important;
+      text-align: center !important;
       border-left: 2px solid #dce8f0 !important;
       border-top: none !important;
-      padding-left: 60px !important;
+      padding-left: 52px !important;
       padding-top: 0 !important;
     }
 
+    .modo-export .foto-ejecutivo-box {
+      width: 250px;
+      height: 250px;
+      margin-bottom: 28px;
+      border-width: 8px;
+    }
+
     .modo-export .ejecutivo strong {
-      font-size: 74px;
+      font-size: 66px;
     }
 
     .modo-export .legal {
-      font-size: 32px;
-      padding: 44px 88px 64px;
+      font-size: 28px;
+      padding: 38px 78px 56px;
     }
 
     @media (max-width: 980px) {
@@ -877,7 +903,7 @@
       }
 
       .ejecutivo {
-        text-align: left;
+        text-align: center;
         border-left: none;
         padding-left: 0;
         border-top: 1px solid #dce8f0;
@@ -893,7 +919,7 @@
 
     <section class="panel">
       <h1>Cotizador AT&T 📱</h1>
-      <p class="subtitulo">Cotiza equipo + plan + adicionales y comparte como archivo PNG en alta calidad</p>
+      <p class="subtitulo">Cotiza equipo + plan + adicionales y comparte como archivo PNG 4K</p>
 
       <label>Nombre del cliente</label>
       <input type="text" id="cliente" value="Cliente" oninput="actualizarCotizacion()">
@@ -906,6 +932,9 @@
 
       <label>Foto de la plaza o tienda</label>
       <input type="file" id="fotoPlaza" accept="image/*" onchange="cargarImagen(event, 'imgPlaza', 'placeholderPlaza')">
+
+      <label>Foto del ejecutivo</label>
+      <input type="file" id="fotoEjecutivo" accept="image/*" onchange="cargarFotoEjecutivo(event)">
 
       <label>Tipo de trámite</label>
       <select id="tramite" onchange="actualizarCotizacion()">
@@ -969,7 +998,7 @@
       <textarea id="notaPersonal" oninput="actualizarCotizacion()">Cotización aproximada. Enganche y mensualidad final se validan en sucursal.</textarea>
 
       <button class="btn btn-principal" onclick="compartirImagen()">
-        Compartir como archivo PNG 📲
+        Compartir PNG 4K 📲
       </button>
 
       <button class="btn btn-tercero" onclick="descargarImagen4K()">
@@ -981,7 +1010,7 @@
       </button>
 
       <p class="nota">
-        Para conservar calidad en WhatsApp, comparte o envía la imagen como documento/archivo, no como foto normal.
+        Para conservar calidad en WhatsApp, envíala como Documento / Archivo. Si la mandas como foto, WhatsApp puede comprimirla.
       </p>
     </section>
 
@@ -1101,10 +1130,13 @@
             <h3>AT&T Plaza Puerta La Victoria</h3>
             <p>📍 Av. Constituyentes Ote. 40 - A, zona dos extendida, Villas del Sol, 76046 Santiago de Querétaro, Qro.</p>
             <p>🕚 Horario: 11:00 a.m. a 8:00 p.m.</p>
-            <p>🗺️ Ubicación: https://share.google/QuT1JA6GkByXxBZrV</p>
           </div>
 
           <div class="ejecutivo">
+            <div id="boxFotoEjecutivo" class="foto-ejecutivo-box">
+              <img id="imgEjecutivo" alt="Foto del ejecutivo">
+            </div>
+
             <p>Te atiende tu ejecutivo de confianza:</p>
             <strong>Adam Chávez</strong>
             <p>📲 WhatsApp: 442 756 1010</p>
@@ -1227,6 +1259,24 @@
       lector.readAsDataURL(archivo);
     }
 
+    function cargarFotoEjecutivo(event) {
+      const archivo = event.target.files[0];
+
+      if (!archivo) return;
+
+      const lector = new FileReader();
+
+      lector.onload = function(e) {
+        const img = document.getElementById("imgEjecutivo");
+        const box = document.getElementById("boxFotoEjecutivo");
+
+        img.src = e.target.result;
+        box.style.display = "block";
+      };
+
+      lector.readAsDataURL(archivo);
+    }
+
     function crearCanvasExportacion() {
       return new Promise((resolve, reject) => {
         actualizarCotizacion();
@@ -1251,7 +1301,7 @@
             logging: false,
             scrollX: 0,
             scrollY: 0,
-            windowWidth: 2600,
+            windowWidth: 2400,
             imageTimeout: 0
           }).then(canvas => {
             document.body.removeChild(wrapper);
@@ -1260,7 +1310,7 @@
             document.body.removeChild(wrapper);
             reject(error);
           });
-        }, 450);
+        }, 500);
       });
     }
 
@@ -1276,7 +1326,7 @@
       const equipo = document.getElementById("equipo").value || "equipo";
 
       const nombreArchivo =
-        "cotizacion-att-" +
+        "cotizacion-att-4k-" +
         limpiarTextoArchivo(cliente) +
         "-" +
         limpiarTextoArchivo(equipo) +
@@ -1287,7 +1337,7 @@
 
         canvas.toBlob(async function(blob) {
           if (!blob) {
-            alert("No se pudo generar la imagen. Intenta de nuevo.");
+            alert("No se pudo generar el PNG 4K. Intenta de nuevo.");
             return;
           }
 
@@ -1297,8 +1347,8 @@
 
           if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
             await navigator.share({
-              title: "Cotización AT&T",
-              text: "Te comparto tu cotización personalizada AT&T. Para mejor calidad, envíala como documento/archivo.",
+              title: "Cotización AT&T PNG 4K",
+              text: "Te comparto tu cotización AT&T en formato PNG.",
               files: [archivo]
             });
           } else {
@@ -1308,7 +1358,7 @@
         }, "image/png", 1.0);
 
       } catch (error) {
-        alert("No se pudo compartir la imagen. Intenta descargarla como PNG 4K.");
+        alert("No se pudo compartir la imagen. Intenta descargar el PNG 4K.");
       }
     }
 
@@ -1346,6 +1396,7 @@
 
       document.getElementById("fotoEquipo").value = "";
       document.getElementById("fotoPlaza").value = "";
+      document.getElementById("fotoEjecutivo").value = "";
 
       document.getElementById("imgEquipo").style.display = "none";
       document.getElementById("imgEquipo").src = "";
@@ -1354,6 +1405,9 @@
       document.getElementById("imgPlaza").style.display = "none";
       document.getElementById("imgPlaza").src = "";
       document.getElementById("placeholderPlaza").style.display = "flex";
+
+      document.getElementById("imgEjecutivo").src = "";
+      document.getElementById("boxFotoEjecutivo").style.display = "none";
 
       actualizarCotizacion();
     }
