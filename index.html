@@ -16,7 +16,7 @@
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #ff6b00, #ffffff 55%, #f2f2f2);
+      background: linear-gradient(135deg, #ff6b00, #ffffff 55%, #eeeeee);
       color: #111;
       padding: 20px;
     }
@@ -44,7 +44,7 @@
       text-align: center;
     }
 
-    .panel .subtitulo {
+    .subtitulo {
       text-align: center;
       margin: 8px 0 20px;
       color: #555;
@@ -54,7 +54,7 @@
     label {
       display: block;
       margin-top: 13px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 14px;
     }
 
@@ -81,6 +81,48 @@
       gap: 12px;
     }
 
+    .colores-equipo {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+      margin-top: 8px;
+    }
+
+    .color-card {
+      border: 2px solid #e5e5e5;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 8px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .color-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+    }
+
+    .color-card.activo {
+      border-color: #ff6b00;
+      box-shadow: 0 0 0 3px rgba(255,107,0,0.18);
+    }
+
+    .color-card img {
+      width: 100%;
+      height: 85px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .color-card span {
+      display: block;
+      text-align: center;
+      margin-top: 6px;
+      font-weight: 900;
+      font-size: 12px;
+      color: #222;
+    }
+
     .btn {
       width: 100%;
       padding: 15px;
@@ -88,7 +130,7 @@
       border: none;
       border-radius: 16px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       transition: 0.2s ease;
     }
@@ -173,7 +215,7 @@
       padding: 9px 13px;
       border-radius: 999px;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       white-space: nowrap;
     }
 
@@ -220,6 +262,12 @@
       display: block;
     }
 
+    .foto-box.producto img {
+      object-fit: contain;
+      padding: 14px;
+      background: white;
+    }
+
     .foto-placeholder {
       min-height: 245px;
       display: flex;
@@ -228,7 +276,7 @@
       text-align: center;
       padding: 16px;
       color: #777;
-      font-weight: 700;
+      font-weight: 800;
       background: linear-gradient(135deg, #ffffff, #eeeeee);
     }
 
@@ -239,9 +287,10 @@
       background: rgba(0,0,0,0.72);
       color: white;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       padding: 7px 10px;
       border-radius: 999px;
+      z-index: 3;
     }
 
     .info {
@@ -263,6 +312,13 @@
       font-size: 31px;
       line-height: 1.1;
       color: #111;
+    }
+
+    .color-texto {
+      color: #ff6b00;
+      font-size: 20px;
+      margin-top: 5px;
+      font-weight: 900;
     }
 
     .tramite-pill {
@@ -292,7 +348,7 @@
       display: block;
       color: #666;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 5px;
       text-transform: uppercase;
       letter-spacing: 0.4px;
@@ -359,7 +415,7 @@
       border-radius: 14px;
       padding: 10px;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       color: #222;
       border: 1px solid #e6eef2;
     }
@@ -468,6 +524,14 @@
         border-top: 1px solid rgba(255,255,255,0.18);
         padding-top: 14px;
       }
+
+      .colores-equipo {
+        grid-template-columns: 1fr;
+      }
+
+      .color-card img {
+        height: 120px;
+      }
     }
   </style>
 </head>
@@ -483,8 +547,29 @@
       <label>Nombre del cliente</label>
       <input type="text" id="cliente" value="Cliente" oninput="actualizarCotizacion()">
 
-      <label>Equipo a cotizar</label>
-      <input type="text" id="equipo" value="iPhone 17 Pro Max" oninput="actualizarCotizacion()">
+      <label>Modelo del equipo</label>
+      <select id="modeloEquipo" onchange="actualizarEquipoAutomatico()">
+        <option value="iPhone 17 Pro Max">iPhone 17 Pro Max</option>
+        <option value="iPhone 17 Pro">iPhone 17 Pro</option>
+      </select>
+
+      <label>Color del equipo</label>
+      <div class="colores-equipo">
+        <button type="button" class="color-card activo" onclick="seleccionarColor('Azul', 'img/iphone-17-pro-azul.webp', this)">
+          <img src="img/iphone-17-pro-azul.webp" alt="iPhone azul">
+          <span>Azul</span>
+        </button>
+
+        <button type="button" class="color-card" onclick="seleccionarColor('Naranja', 'img/iphone-17-pro-naranja.jpg', this)">
+          <img src="img/iphone-17-pro-naranja.jpg" alt="iPhone naranja">
+          <span>Naranja</span>
+        </button>
+
+        <button type="button" class="color-card" onclick="seleccionarColor('Plata', 'img/iphone-17-pro-plata.jpg', this)">
+          <img src="img/iphone-17-pro-plata.jpg" alt="iPhone plata">
+          <span>Plata</span>
+        </button>
+      </div>
 
       <label>Tipo de trámite</label>
       <select id="tramite" onchange="actualizarCotizacion()">
@@ -531,9 +616,6 @@
         <option value="Titanio|42|1599">AT&T Titanio - 42 GB - $1,599</option>
       </select>
 
-      <label>Foto del equipo</label>
-      <input type="file" id="fotoEquipo" accept="image/*" onchange="cargarImagen(event, 'imgEquipo', 'placeholderEquipo')">
-
       <label>Foto de la plaza o tienda</label>
       <input type="file" id="fotoPlaza" accept="image/*" onchange="cargarImagen(event, 'imgPlaza', 'placeholderPlaza')">
 
@@ -549,7 +631,7 @@
       </button>
 
       <p class="nota">
-        Consejo: sube una foto clara del equipo y una foto bonita de la plaza para que la cotización se vea más premium.
+        Sube una foto bonita de la plaza y selecciona el color del equipo. La imagen del iPhone se cambia automáticamente.
       </p>
     </section>
 
@@ -570,12 +652,9 @@
         </div>
 
         <div class="media-section">
-          <div class="foto-box">
+          <div class="foto-box producto">
             <span class="tag-img">Equipo cotizado</span>
-            <div id="placeholderEquipo" class="foto-placeholder">
-              Sube aquí la foto del equipo 📱
-            </div>
-            <img id="imgEquipo" style="display:none;" alt="Foto del equipo">
+            <img id="imgEquipo" src="img/iphone-17-pro-azul.webp" alt="Foto del equipo">
           </div>
 
           <div class="foto-box">
@@ -589,7 +668,10 @@
 
         <div class="info">
           <div class="equipo-title">
-            <h2 id="vistaEquipo">iPhone 17 Pro Max</h2>
+            <div>
+              <h2 id="vistaEquipo">iPhone 17 Pro Max</h2>
+              <div class="color-texto" id="vistaColor">Color Azul</div>
+            </div>
             <div class="tramite-pill" id="vistaTramite">Activación nueva</div>
           </div>
 
@@ -660,6 +742,9 @@
   </div>
 
   <script>
+    let colorSeleccionado = "Azul";
+    let imagenSeleccionada = "img/iphone-17-pro-azul.webp";
+
     function formatoMoneda(valor) {
       const numero = Number(valor) || 0;
       return numero.toLocaleString("es-MX", {
@@ -667,6 +752,15 @@
         currency: "MXN",
         maximumFractionDigits: 0
       });
+    }
+
+    function limpiarTextoArchivo(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
     function obtenerPlan() {
@@ -680,9 +774,31 @@
       };
     }
 
+    function seleccionarColor(color, imagen, boton) {
+      colorSeleccionado = color;
+      imagenSeleccionada = imagen;
+
+      const botones = document.querySelectorAll(".color-card");
+      botones.forEach(btn => btn.classList.remove("activo"));
+
+      boton.classList.add("activo");
+
+      actualizarEquipoAutomatico();
+    }
+
+    function actualizarEquipoAutomatico() {
+      const modelo = document.getElementById("modeloEquipo").value;
+
+      document.getElementById("imgEquipo").src = imagenSeleccionada;
+      document.getElementById("vistaEquipo").innerText = modelo;
+      document.getElementById("vistaColor").innerText = "Color " + colorSeleccionado;
+
+      actualizarCotizacion();
+    }
+
     function actualizarCotizacion() {
       const cliente = document.getElementById("cliente").value || "Cliente";
-      const equipo = document.getElementById("equipo").value || "Equipo a cotizar";
+      const modelo = document.getElementById("modeloEquipo").value || "Equipo a cotizar";
       const tramite = document.getElementById("tramite").value;
       const precioRegular = Number(document.getElementById("precioRegular").value) || 0;
       const precioPromo = Number(document.getElementById("precioPromo").value) || 0;
@@ -702,14 +818,14 @@
       const totalMensual = mensualEquipo + plan.renta;
 
       document.getElementById("vistaCliente").innerText = cliente;
-      document.getElementById("vistaEquipo").innerText = equipo;
+      document.getElementById("vistaEquipo").innerText = modelo;
+      document.getElementById("vistaColor").innerText = "Color " + colorSeleccionado;
       document.getElementById("vistaTramite").innerText = tramite;
 
       document.getElementById("vistaPrecioRegular").innerText = formatoMoneda(precioRegular);
       document.getElementById("vistaPrecioPromo").innerText = formatoMoneda(precioPromo);
       document.getElementById("vistaEnganche").innerText = formatoMoneda(enganche);
       document.getElementById("vistaMensualEquipo").innerText = formatoMoneda(mensualEquipo);
-
       document.getElementById("vistaTotalMensual").innerText = formatoMoneda(totalMensual);
 
       document.getElementById("vistaPlan").innerText = "AT&T " + plan.nombre;
@@ -743,7 +859,7 @@
 
       const cotizacion = document.getElementById("cotizacion");
       const cliente = document.getElementById("cliente").value || "cliente";
-      const equipo = document.getElementById("equipo").value || "equipo";
+      const modelo = document.getElementById("modeloEquipo").value || "equipo";
 
       html2canvas(cotizacion, {
         scale: 3,
@@ -752,10 +868,13 @@
       }).then(canvas => {
         const enlace = document.createElement("a");
 
-        const nombreArchivo = "cotizacion-att-" +
-          cliente.toLowerCase().replaceAll(" ", "-") +
+        const nombreArchivo =
+          "cotizacion-att-" +
+          limpiarTextoArchivo(cliente) +
           "-" +
-          equipo.toLowerCase().replaceAll(" ", "-") +
+          limpiarTextoArchivo(modelo) +
+          "-" +
+          limpiarTextoArchivo(colorSeleccionado) +
           ".png";
 
         enlace.download = nombreArchivo;
@@ -766,29 +885,32 @@
 
     function limpiarFormulario() {
       document.getElementById("cliente").value = "Cliente";
-      document.getElementById("equipo").value = "";
+      document.getElementById("modeloEquipo").value = "iPhone 17 Pro Max";
       document.getElementById("tramite").value = "Activación nueva";
-      document.getElementById("precioRegular").value = "";
-      document.getElementById("precioPromo").value = "";
-      document.getElementById("enganche").value = "";
+      document.getElementById("precioRegular").value = "31000";
+      document.getElementById("precioPromo").value = "24000";
+      document.getElementById("enganche").value = "2400";
       document.getElementById("meses").value = "24";
       document.getElementById("plan").value = "Black|42|825";
       document.getElementById("notaPersonal").value = "Cotización aproximada. Enganche y mensualidad final se validan en sucursal.";
 
-      document.getElementById("fotoEquipo").value = "";
       document.getElementById("fotoPlaza").value = "";
-
-      document.getElementById("imgEquipo").style.display = "none";
-      document.getElementById("imgEquipo").src = "";
-      document.getElementById("placeholderEquipo").style.display = "flex";
 
       document.getElementById("imgPlaza").style.display = "none";
       document.getElementById("imgPlaza").src = "";
       document.getElementById("placeholderPlaza").style.display = "flex";
 
-      actualizarCotizacion();
+      colorSeleccionado = "Azul";
+      imagenSeleccionada = "img/iphone-17-pro-azul.webp";
+
+      const botones = document.querySelectorAll(".color-card");
+      botones.forEach(btn => btn.classList.remove("activo"));
+      botones[0].classList.add("activo");
+
+      actualizarEquipoAutomatico();
     }
 
+    actualizarEquipoAutomatico();
     actualizarCotizacion();
   </script>
 
