@@ -932,7 +932,7 @@
 
       <div class="fila">
         <div>
-          <label>Enganche usado para cálculo</label>
+          <label>Enganche de</label>
           <input type="number" id="enganche" value="2400" min="0" oninput="actualizarCotizacion()">
         </div>
 
@@ -947,7 +947,7 @@
       </div>
 
       <div id="avisoEnganche" class="aviso">
-        El enganche sugerido para este equipo va desde $2,400 hasta $12,000.
+        Revisa que el enganche esté dentro del rango autorizado para esta cotización.
       </div>
 
       <label>Plan AT&T</label>
@@ -985,7 +985,7 @@
       </button>
 
       <p class="nota">
-        El enganche que escribas se usa solo para calcular el financiamiento mensual del equipo.
+        El enganche se usa para calcular la mensualidad, pero en la cotización solo se muestra como “Enganche de”.
       </p>
     </section>
 
@@ -1032,13 +1032,13 @@
           <div class="promo-main">
             <span>Promoción del equipo</span>
             <strong id="vistaPromoTexto">De $31,000 baja a $24,000</strong>
-            <small>Enganche desde $2,400 hasta $12,000.</small>
+            <small>Financiado a meses sin intereses con plan AT&T.</small>
           </div>
 
           <div class="grid-datos">
             <div class="dato">
-              <span>Enganche</span>
-              <strong>Desde $2,400 hasta $12,000</strong>
+              <span>Enganche de</span>
+              <strong id="vistaEnganche">$2,400</strong>
             </div>
 
             <div class="dato">
@@ -1128,8 +1128,6 @@
   <script>
     const COSTO_CONTROL_DATOS = 50;
     const COSTO_SEGURO = 254;
-    const ENGANCHE_MINIMO = 2400;
-    const ENGANCHE_MAXIMO = 12000;
 
     function formatoMoneda(valor) {
       const numero = Number(valor) || 0;
@@ -1188,14 +1186,6 @@
       const financiamientoEquipo = restante / meses;
       const totalMensual = financiamientoEquipo + plan.renta + costoControlDatos + costoSeguro;
 
-      const avisoEnganche = document.getElementById("avisoEnganche");
-
-      if (enganche > 0 && (enganche < ENGANCHE_MINIMO || enganche > ENGANCHE_MAXIMO)) {
-        avisoEnganche.style.display = "block";
-      } else {
-        avisoEnganche.style.display = "none";
-      }
-
       document.getElementById("vistaCliente").innerText = cliente;
       document.getElementById("vistaEquipo").innerText = equipo;
       document.getElementById("vistaTramite").innerText = tramite;
@@ -1203,6 +1193,7 @@
       document.getElementById("vistaPromoTexto").innerText =
         "De " + formatoMoneda(precioRegular) + " baja a " + formatoMoneda(precioPromo);
 
+      document.getElementById("vistaEnganche").innerText = formatoMoneda(enganche);
       document.getElementById("vistaRestante").innerText = formatoMoneda(restante);
       document.getElementById("vistaMeses").innerText = meses;
       document.getElementById("vistaTotalMensual").innerText = formatoMoneda(totalMensual);
