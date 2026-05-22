@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador AT&T Adam Chávez</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff6b00, #ffffff);
+      margin: 0;
+      padding: 20px;
+      color: #111;
+    }
+
+    .contenedor {
+      max-width: 430px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6b00;
+      margin-bottom: 5px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 14px;
+      background: #ff6b00;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .resultado {
+      background: #f5f5f5;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 16px;
+      font-size: 15px;
+      white-space: pre-line;
+    }
+
+    .whatsapp {
+      background: #25D366;
+    }
+
+    .nota {
+      font-size: 12px;
+      color: #666;
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+    <h1>Simulador AT&T 📱</h1>
+    <p class="subtitulo">Cotización rápida con tu ejecutivo de confianza Adam Chávez</p>
+
+    <label>Nombre del cliente</label>
+    <input type="text" id="cliente" placeholder="Ej. Juan">
+
+    <label>Equipo a cotizar</label>
+    <input type="text" id="equipo" placeholder="Ej. iPhone 17 Pro Max">
+
+    <label>Precio promo del equipo</label>
+    <input type="number" id="precio" placeholder="Ej. 24000">
+
+    <label>Enganche aproximado</label>
+    <input type="number" id="enganche" placeholder="Ej. 2400">
+
+    <label>Meses</label>
+    <select id="meses">
+      <option value="24">24 meses</option>
+      <option value="18">18 meses</option>
+      <option value="12">12 meses</option>
+    </select>
+
+    <label>Plan recomendado</label>
+    <input type="text" id="plan" placeholder="Ej. Plan Black 40GB + 6 apps ilimitadas">
+
+    <button onclick="generarCotizacion()">Generar cotización</button>
+
+    <div class="resultado" id="resultado">
+      Aquí aparecerá la cotización.
+    </div>
+
+    <button class="whatsapp" onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
+
+    <p class="nota">
+      Cotización aproximada. El enganche y mensualidad final se validan en sucursal.
+    </p>
+  </div>
+
+  <script>
+    let mensajeFinal = "";
+
+    function generarCotizacion() {
+      const cliente = document.getElementById("cliente").value;
+      const equipo = document.getElementById("equipo").value;
+      const precio = Number(document.getElementById("precio").value);
+      const enganche = Number(document.getElementById("enganche").value);
+      const meses = Number(document.getElementById("meses").value);
+      const plan = document.getElementById("plan").value;
+
+      const restante = precio - enganche;
+      const mensualEquipo = restante / meses;
+
+      mensajeFinal =
+`Hola ${cliente} 👋😄
+
+Te comparto tu cotización aproximada:
+
+📱 Equipo: ${equipo}
+🔥 Precio promo: $${precio.toLocaleString("es-MX")}
+💰 Enganche aprox: $${enganche.toLocaleString("es-MX")}
+📆 Plazo: ${meses} meses
+📲 Equipo aprox al mes: $${mensualEquipo.toFixed(0)}
+
+📶 Plan recomendado:
+${plan}
+
+✅ Sin tarjeta de crédito
+🪪 Solo INE + enganche
+📍 Solo aquí en AT&T Plaza Puerta La Victoria
+🤝 Con tu ejecutivo de confianza: Adam Chávez
+
+¿Te gustaría realizar una visita para revisar tu cotización exacta? 📲🔥`;
+
+      document.getElementById("resultado").innerText = mensajeFinal;
+    }
+
+    function enviarWhatsApp() {
+      if (mensajeFinal === "") {
+        generarCotizacion();
+      }
+
+      const numero = "524427561010";
+      const url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensajeFinal);
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
