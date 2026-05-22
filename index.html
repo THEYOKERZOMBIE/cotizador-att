@@ -22,7 +22,6 @@
       --gris-suave: #F5F9FC;
       --borde: #DDEBF3;
       --blanco: #FFFFFF;
-      --verde: #10B981;
     }
 
     body {
@@ -57,7 +56,6 @@
       color: var(--azul-att);
       font-size: 28px;
       text-align: center;
-      letter-spacing: -0.4px;
       font-weight: 900;
     }
 
@@ -509,7 +507,7 @@
       line-height: 1.2;
     }
 
-    .adicionales-box {
+    .desglose-box {
       margin-top: 18px;
       padding: 18px;
       border-radius: 22px;
@@ -517,26 +515,33 @@
       border: 1px solid #d7f1fb;
     }
 
-    .adicionales-box h4 {
+    .desglose-box h4 {
       margin: 0 0 10px;
       color: var(--negro);
       font-size: 18px;
       font-weight: 900;
     }
 
-    .adicional-line {
+    .desglose-line {
       display: flex;
       justify-content: space-between;
       gap: 10px;
-      padding: 8px 0;
+      padding: 9px 0;
       border-bottom: 1px solid #eef4f8;
       font-size: 15px;
       color: var(--gris);
       font-weight: 800;
     }
 
-    .adicional-line:last-child {
+    .desglose-line:last-child {
       border-bottom: none;
+    }
+
+    .desglose-line.total-line {
+      margin-top: 6px;
+      padding-top: 12px;
+      font-size: 17px;
+      color: var(--negro);
     }
 
     .footer-card {
@@ -764,19 +769,23 @@
       border-radius: 40px;
     }
 
-    .modo-export .adicionales-box {
+    .modo-export .desglose-box {
       padding: 44px;
       border-radius: 48px;
       margin-top: 40px;
     }
 
-    .modo-export .adicionales-box h4 {
+    .modo-export .desglose-box h4 {
       font-size: 46px;
     }
 
-    .modo-export .adicional-line {
+    .modo-export .desglose-line {
       font-size: 38px;
       padding: 18px 0;
+    }
+
+    .modo-export .desglose-line.total-line {
+      font-size: 42px;
     }
 
     .modo-export .footer-card {
@@ -923,7 +932,7 @@
 
       <div class="fila">
         <div>
-          <label>Enganche aproximado</label>
+          <label>Enganche usado para cálculo</label>
           <input type="number" id="enganche" value="2400" min="0" oninput="actualizarCotizacion()">
         </div>
 
@@ -976,7 +985,7 @@
       </button>
 
       <p class="nota">
-        La imagen se genera en tamaño 4K para mejorar la nitidez al enviarla por WhatsApp.
+        El enganche que escribas se usa solo para calcular el financiamiento mensual del equipo.
       </p>
     </section>
 
@@ -1023,23 +1032,18 @@
           <div class="promo-main">
             <span>Promoción del equipo</span>
             <strong id="vistaPromoTexto">De $31,000 baja a $24,000</strong>
-            <small>Enganche sugerido desde $2,400 hasta $12,000.</small>
+            <small>Enganche desde $2,400 hasta $12,000.</small>
           </div>
 
           <div class="grid-datos">
             <div class="dato">
-              <span>Enganche aprox.</span>
-              <strong id="vistaEnganche">$2,400</strong>
+              <span>Enganche</span>
+              <strong>Desde $2,400 hasta $12,000</strong>
             </div>
 
             <div class="dato">
               <span>Restante financiado</span>
               <strong id="vistaRestante">$21,600</strong>
-            </div>
-
-            <div class="dato">
-              <span>Equipo aprox. al mes</span>
-              <strong id="vistaMensualEquipo">$900</strong>
             </div>
 
             <div class="dato dark">
@@ -1065,22 +1069,32 @@
               <div class="beneficio">❌💳 Sin tarjeta de crédito</div>
             </div>
 
-            <div class="adicionales-box">
-              <h4>Adicionales seleccionados</h4>
+            <div class="desglose-box">
+              <h4>Desglose de mensualidad</h4>
 
-              <div class="adicional-line">
+              <div class="desglose-line">
+                <span id="vistaPlanDesgloseNombre">Plan AT&T Black</span>
+                <strong id="vistaPlanDesglose">$825</strong>
+              </div>
+
+              <div class="desglose-line">
+                <span>Financiamiento del equipo</span>
+                <strong id="vistaFinanciamientoEquipo">$900</strong>
+              </div>
+
+              <div class="desglose-line">
                 <span>Control de Datos</span>
                 <strong id="vistaControlDatos">$0</strong>
               </div>
 
-              <div class="adicional-line">
+              <div class="desglose-line">
                 <span>Seguro</span>
                 <strong id="vistaSeguro">$0</strong>
               </div>
 
-              <div class="adicional-line">
-                <span>Total adicionales</span>
-                <strong id="vistaTotalAdicionales">$0</strong>
+              <div class="desglose-line total-line">
+                <span>Total mensual</span>
+                <strong id="vistaTotalDesglose">$1,725</strong>
               </div>
             </div>
           </div>
@@ -1164,7 +1178,6 @@
 
       const costoControlDatos = controlDatosActivo ? COSTO_CONTROL_DATOS : 0;
       const costoSeguro = seguroActivo ? COSTO_SEGURO : 0;
-      const totalAdicionales = costoControlDatos + costoSeguro;
 
       let restante = precioPromo - enganche;
 
@@ -1172,8 +1185,8 @@
         restante = 0;
       }
 
-      const mensualEquipo = restante / meses;
-      const totalMensual = mensualEquipo + plan.renta + totalAdicionales;
+      const financiamientoEquipo = restante / meses;
+      const totalMensual = financiamientoEquipo + plan.renta + costoControlDatos + costoSeguro;
 
       const avisoEnganche = document.getElementById("avisoEnganche");
 
@@ -1190,20 +1203,20 @@
       document.getElementById("vistaPromoTexto").innerText =
         "De " + formatoMoneda(precioRegular) + " baja a " + formatoMoneda(precioPromo);
 
-      document.getElementById("vistaEnganche").innerText = formatoMoneda(enganche);
       document.getElementById("vistaRestante").innerText = formatoMoneda(restante);
-      document.getElementById("vistaMensualEquipo").innerText = formatoMoneda(mensualEquipo);
       document.getElementById("vistaMeses").innerText = meses;
-
       document.getElementById("vistaTotalMensual").innerText = formatoMoneda(totalMensual);
 
       document.getElementById("vistaPlan").innerText = "AT&T " + plan.nombre;
       document.getElementById("vistaGb").innerText = plan.gb + " GB";
       document.getElementById("vistaRentaPlan").innerText = formatoMoneda(plan.renta);
 
+      document.getElementById("vistaPlanDesgloseNombre").innerText = "Plan AT&T " + plan.nombre;
+      document.getElementById("vistaPlanDesglose").innerText = formatoMoneda(plan.renta);
+      document.getElementById("vistaFinanciamientoEquipo").innerText = formatoMoneda(financiamientoEquipo);
       document.getElementById("vistaControlDatos").innerText = formatoMoneda(costoControlDatos);
       document.getElementById("vistaSeguro").innerText = formatoMoneda(costoSeguro);
-      document.getElementById("vistaTotalAdicionales").innerText = formatoMoneda(totalAdicionales);
+      document.getElementById("vistaTotalDesglose").innerText = formatoMoneda(totalMensual);
 
       document.getElementById("vistaNota").innerText = nota;
     }
