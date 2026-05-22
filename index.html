@@ -228,11 +228,14 @@
     .foto-box {
       background: white;
       border-radius: 26px;
-      height: 260px;
+      height: 290px;
       overflow: hidden;
       position: relative;
       border: 1px solid var(--borde);
       box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .foto-box img {
@@ -245,17 +248,19 @@
       object-fit: contain;
       object-position: center;
       background: white;
-      padding: 18px;
+      padding: 22px;
     }
 
     .foto-box.sucursal img {
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
-      background: white;
+      background: #ffffff;
+      padding: 0;
     }
 
     .foto-placeholder {
-      height: 260px;
+      width: 100%;
+      height: 290px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -517,12 +522,23 @@
     }
 
     .modo-export .foto-box {
-      height: 320px;
+      height: 380px;
       border-radius: 32px;
     }
 
     .modo-export .foto-placeholder {
-      height: 320px;
+      height: 380px;
+    }
+
+    .modo-export .foto-box.producto img {
+      object-fit: contain !important;
+      padding: 34px !important;
+    }
+
+    .modo-export .foto-box.sucursal img {
+      object-fit: contain !important;
+      padding: 0 !important;
+      background: #ffffff !important;
     }
 
     .modo-export .tag-img {
@@ -659,7 +675,7 @@
 
       .foto-box,
       .foto-placeholder {
-        height: 250px;
+        height: 285px;
       }
 
       .equipo-title {
@@ -691,7 +707,7 @@
 
     <section class="panel">
       <h1>Cotizador AT&T 📱</h1>
-      <p class="subtitulo">Genera cotizaciones visuales y descárgalas como imagen en alta calidad</p>
+      <p class="subtitulo">Genera cotizaciones visuales y compártelas directamente como imagen</p>
 
       <label>Nombre del cliente</label>
       <input type="text" id="cliente" value="Cliente" oninput="actualizarCotizacion()">
@@ -753,8 +769,8 @@
       <label>Nota personalizada</label>
       <textarea id="notaPersonal" oninput="actualizarCotizacion()">Cotización aproximada. Enganche y mensualidad final se validan en sucursal.</textarea>
 
-      <button class="btn btn-principal" onclick="descargarImagen()">
-        Descargar cotización en alta calidad 📸
+      <button class="btn btn-principal" onclick="compartirImagen()">
+        Compartir cotización como imagen 📲
       </button>
 
       <button class="btn btn-secundario" onclick="limpiarFormulario()">
@@ -762,7 +778,7 @@
       </button>
 
       <p class="nota">
-        Esta versión exporta una imagen grande para que las letras se vean más claras al enviarla por WhatsApp.
+        En celular se abrirá el menú para compartir la imagen. Si tu navegador no lo permite, se guardará como respaldo.
       </p>
     </section>
 
@@ -959,53 +975,89 @@
       lector.readAsDataURL(archivo);
     }
 
-    function descargarImagen() {
-      actualizarCotizacion();
+    function crearCanvasExportacion() {
+      return new Promise((resolve, reject) => {
+        actualizarCotizacion();
 
-      const original = document.getElementById("cotizacion");
+        const original = document.getElementById("cotizacion");
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "export-wrapper";
+
+        const clon = original.cloneNode(true);
+        clon.classList.add("modo-export");
+
+        wrapper.appendChild(clon);
+        document.body.appendChild(wrapper);
+
+        setTimeout(() => {
+          html2canvas(clon, {
+            scale: 2,
+            backgroundColor: "#ffffff",
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 1400,
+            imageTimeout: 0
+          }).then(canvas => {
+            document.body.removeChild(wrapper);
+            resolve(canvas);
+          }).catch(error => {
+            document.body.removeChild(wrapper);
+            reject(error);
+          });
+        }, 350);
+      });
+    }
+
+    function descargarRespaldo(canvas, nombreArchivo) {
+      const enlace = document.createElement("a");
+      enlace.download = nombreArchivo;
+      enlace.href = canvas.toDataURL("image/png", 1.0);
+      enlace.click();
+    }
+
+    async function compartirImagen() {
       const cliente = document.getElementById("cliente").value || "cliente";
       const equipo = document.getElementById("equipo").value || "equipo";
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "export-wrapper";
+      const nombreArchivo =
+        "cotizacion-att-" +
+        limpiarTextoArchivo(cliente) +
+        "-" +
+        limpiarTextoArchivo(equipo) +
+        ".png";
 
-      const clon = original.cloneNode(true);
-      clon.classList.add("modo-export");
+      try {
+        const canvas = await crearCanvasExportacion();
 
-      wrapper.appendChild(clon);
-      document.body.appendChild(wrapper);
+        canvas.toBlob(async function(blob) {
+          if (!blob) {
+            alert("No se pudo generar la imagen. Intenta de nuevo.");
+            return;
+          }
 
-      setTimeout(() => {
-        html2canvas(clon, {
-          scale: 3,
-          backgroundColor: "#ffffff",
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-          windowWidth: 1400,
-          imageTimeout: 0
-        }).then(canvas => {
-          const enlace = document.createElement("a");
+          const archivo = new File([blob], nombreArchivo, {
+            type: "image/png"
+          });
 
-          const nombreArchivo =
-            "cotizacion-att-" +
-            limpiarTextoArchivo(cliente) +
-            "-" +
-            limpiarTextoArchivo(equipo) +
-            ".png";
+          if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+            await navigator.share({
+              title: "Cotización AT&T",
+              text: "Te comparto tu cotización personalizada AT&T.",
+              files: [archivo]
+            });
+          } else {
+            descargarRespaldo(canvas, nombreArchivo);
+            alert("Tu navegador no permite compartir directo. Se guardó la imagen como respaldo.");
+          }
+        }, "image/png", 1.0);
 
-          enlace.download = nombreArchivo;
-          enlace.href = canvas.toDataURL("image/png", 1.0);
-          enlace.click();
-
-          document.body.removeChild(wrapper);
-        }).catch(() => {
-          document.body.removeChild(wrapper);
-          alert("No se pudo descargar la imagen. Intenta de nuevo.");
-        });
-      }, 350);
+      } catch (error) {
+        alert("No se pudo compartir la imagen. Intenta de nuevo.");
+      }
     }
 
     function limpiarFormulario() {
